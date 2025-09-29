@@ -142,7 +142,101 @@ public class quicksort {
         int array2[] = new int[10000];
         int array3[] = new int[100000];
 
-        // Métodos com o array de 1000 elementos
+        // Métodos com o array de 1000 elementos:
+
+        // 1) Ordenado
+        //a) Pivô no primeiro elemento
+            crescente(array1);
+            long startTime = System.nanoTime();
+            QuickSortFirstPivot(array1, 0, array1.length - 1);
+            long endTime = System.nanoTime();
+            long duracao = endTime - startTime;
+            System.out.println("Array de 1000 elementos ordenado - Pivô no primeiro elemento: " + duracao + " nanosegundos");
+        //b) Pivô no último elemento
+            crescente(array1);
+            startTime = System.nanoTime();
+            QuickSortLastPivot(array1, 0, array1.length - 1);
+            endTime = System.nanoTime();
+            duracao = endTime - startTime;
+            System.out.println("Array de 1000 elementos ordenado - Pivô no último elemento: " + duracao + " nanosegundos");
+        //c) Pivô aleatório
+            crescente(array1);
+            startTime = System.nanoTime();
+            QuickSortRandomPivot(array1, 0, array1.length - 1);
+            endTime = System.nanoTime();
+            duracao = endTime - startTime;
+            System.out.println("Array de 1000 elementos ordenado - Pivô aleatório: " + duracao + " nanosegundos");
+        //d) Mediana de três
+            crescente(array1);
+            startTime = System.nanoTime();
+            QuickSortMedianOfThree(array1, 0, array1.length - 1);
+            endTime = System.nanoTime();
+            duracao = endTime - startTime;
+            System.out.println("Array de 1000 elementos ordenado - Mediana de três: " + duracao + " nanosegundos");
+
+
+
+        // 2) Semi-ordenado
+        //a) Pivô no primeiro elemento
+            semiOrdenado(array1);
+            startTime = System.nanoTime();
+            QuickSortFirstPivot(array1, 0, array1.length - 1);
+            endTime = System.nanoTime();
+            duracao = endTime - startTime;
+            System.out.println("Array de 1000 elementos semi-ordenado - Pivô no primeiro elemento: " + duracao + " nanosegundos");
+        //b) Pivô no último elemento
+            semiOrdenado(array1);
+            startTime = System.nanoTime();
+            QuickSortLastPivot(array1, 0, array1.length - 1);
+            endTime = System.nanoTime();
+            duracao = endTime - startTime;
+            System.out.println("Array de 1000 elementos semi-ordenado - Pivô no último elemento: " + duracao + " nanosegundos");
+        //c) Pivô aleatório
+            semiOrdenado(array1);  
+            startTime = System.nanoTime();
+            QuickSortRandomPivot(array1, 0, array1.length - 1);
+            endTime = System.nanoTime();
+            duracao = endTime - startTime;
+            System.out.println("Array de 1000 elementos semi-ordenado - Pivô aleatório: " + duracao + " nanosegundos");
+        //d) Mediana de três
+            semiOrdenado(array1);
+            startTime = System.nanoTime();
+            QuickSortMedianOfThree(array1, 0, array1.length - 1);
+            endTime = System.nanoTime();
+            duracao = endTime - startTime;
+            System.out.println("Array de 1000 elementos semi-ordenado - Mediana de três: " + duracao + " nanosegundos");
+
+            
+        // 3) Aleatório
+        //a) Pivô no primeiro elemento
+            arrayAleatorio(array1);
+            startTime = System.nanoTime();
+            QuickSortFirstPivot(array1, 0, array1.length - 1);
+            endTime = System.nanoTime();
+            duracao = endTime - startTime;
+            System.out.println("Array de 1000 elementos aleatório - Pivô no primeiro elemento: " + duracao + " nanosegundos");
+        //b) Pivô no último elemento
+            arrayAleatorio(array1);
+            startTime = System.nanoTime();
+            QuickSortLastPivot(array1, 0, array1.length - 1);
+            endTime = System.nanoTime();
+            duracao = endTime - startTime;
+            System.out.println("Array de 1000 elementos aleatório - Pivô no último elemento: " + duracao + " nanosegundos");
+        //c) Pivô aleatório
+            arrayAleatorio(array1);
+            startTime = System.nanoTime();
+            QuickSortRandomPivot(array1, 0, array1.length - 1);
+            endTime = System.nanoTime();
+            duracao = endTime - startTime;
+            System.out.println("Array de 1000 elementos aleatório - Pivô aleatório: " + duracao + " nanosegundos");
+        //d) Mediana de três
+            arrayAleatorio(array1);
+            startTime = System.nanoTime();
+            QuickSortMedianOfThree(array1, 0, array1.length - 1);
+            endTime = System.nanoTime();
+            duracao = endTime - startTime;
+            System.out.println("Array de 1000 elementos aleatório - Mediana de três: " + duracao + " nanosegundos");
+        System.out.println("--------------------------------------------------");
 
         
 
