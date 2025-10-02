@@ -138,9 +138,9 @@ public class quicksort {
 
 
         // Criando arrays de diferentes tamanhos
-        int array1[] = new int[1000]; 
-        int array2[] = new int[10000];
-        int array3[] = new int[100000];
+        int array1[] = new int[100]; 
+        int array2[] = new int[1000];
+        int array3[] = new int[10000];
 
         // Métodos com o array de 1000 elementos:
 

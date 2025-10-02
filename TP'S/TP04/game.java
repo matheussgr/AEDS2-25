@@ -1,8 +1,12 @@
 // Matheus Gouvêa Ramalho - TP04
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
 
-class game{
-    
+public class game {
+
     // Atributos
     private int id;
     private String name;
@@ -20,8 +24,12 @@ class game{
     private String[] tags;
 
     // Construtores
-    public game(){}
-    public game(int id, String name, String releaseDate, int estimatedOwners, float price, String[] supportedLanguages, int metacriticScores, float userScore, int achievements, String[] publishers, String[] developers, String[] categories, String[] genres, String[] tags){
+    public game() {
+    }
+
+    public game(int id, String name, String releaseDate, int estimatedOwners, float price, String[] supportedLanguages,
+            int metacriticScores, float userScore, int achievements, String[] publishers, String[] developers,
+            String[] categories, String[] genres, String[] tags) {
         this.id = id;
         this.name = name;
         this.releaseDate = releaseDate;
@@ -39,74 +47,145 @@ class game{
     }
 
     // Getters e Setters
-    public int getID(){return id;}
-    public void setID(int id){this.id = id;}
+    public int getID() {
+        return id;
+    }
 
-    public String getName(){return name;}
-    public void setName(String name){this.name = name;}
+    public void setID(int id) {
+        this.id = id;
+    }
 
-    public String getReleaseDate(){return releaseDate;}
-    public void setReleaseDate(String releaseDate){this.releaseDate = releaseDate;}
+    public String getName() {
+        return name;
+    }
 
-    public int getEstimatedOwners(){return estimatedOwners;}
-    public void setEstimatedOwners(int estimatedOwners){this.estimatedOwners = estimatedOwners;}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public float getPrice(){return price;}
-    public void setPrice(float price){this.price = price;}
+    public String getReleaseDate() {
+        return releaseDate;
+    }
 
-    public String[] getSupportedLanguages(){return supportedLanguages;}
-    public void setSupportedLanguages(String[] supportedLanguages){this.supportedLanguages = supportedLanguages;}
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
+    }
 
-    public int getMetacriticScores(){return metacriticScores;}
-    public void setMetacriticScores(int metacriticScores){this.metacriticScores = metacriticScores;}
+    public int getEstimatedOwners() {
+        return estimatedOwners;
+    }
 
-    public float getUserScore(){return userScore;}
-    public void setUserScore(float userScore){this.userScore = userScore;}
+    public void setEstimatedOwners(int estimatedOwners) {
+        this.estimatedOwners = estimatedOwners;
+    }
 
-    public int getAchievements(){return achievements;}
-    public void setAchievements(int achievements){this.achievements = achievements;}
+    public float getPrice() {
+        return price;
+    }
 
-    public String[] getPublishers(){return publishers;}
-    public void setPublishers(String[] publishers){this.publishers = publishers;}
+    public void setPrice(float price) {
+        this.price = price;
+    }
 
-    public String[] getDevelopers(){return developers;}
-    public void setDevelopers(String[] developers){this.developers = developers;}
+    public String[] getSupportedLanguages() {
+        return supportedLanguages;
+    }
 
-    public String[] getCategories(){return categories;}
-    public void setCategories(String[] categories){this.categories = categories;}
+    public void setSupportedLanguages(String[] supportedLanguages) {
+        this.supportedLanguages = supportedLanguages;
+    }
 
-    public String[] getGenres(){return genres;}
-    public void setGenres(String[] genres){this.genres = genres;}
+    public int getMetacriticScores() {
+        return metacriticScores;
+    }
 
-    public String[] getTags(){return tags;}
-    public void setTags(String[] tags){this.tags = tags;}
+    public void setMetacriticScores(int metacriticScores) {
+        this.metacriticScores = metacriticScores;
+    }
+
+    public float getUserScore() {
+        return userScore;
+    }
+
+    public void setUserScore(float userScore) {
+        this.userScore = userScore;
+    }
+
+    public int getAchievements() {
+        return achievements;
+    }
+
+    public void setAchievements(int achievements) {
+        this.achievements = achievements;
+    }
+
+    public String[] getPublishers() {
+        return publishers;
+    }
+
+    public void setPublishers(String[] publishers) {
+        this.publishers = publishers;
+    }
+
+    public String[] getDevelopers() {
+        return developers;
+    }
+
+    public void setDevelopers(String[] developers) {
+        this.developers = developers;
+    }
+
+    public String[] getCategories() {
+        return categories;
+    }
+
+    public void setCategories(String[] categories) {
+        this.categories = categories;
+    }
+
+    public String[] getGenres() {
+        return genres;
+    }
+
+    public void setGenres(String[] genres) {
+        this.genres = genres;
+    }
+
+    public String[] getTags() {
+        return tags;
+    }
+
+    public void setTags(String[] tags) {
+        this.tags = tags;
+    }
 
     // toString: Formatação de saída
-    public String toString(game g){
+    @Override
+    public String toString() {
         String resultado;
-        resultado = g.getID() + " " + 
-                    g.getName() + " " + 
-                    g.getReleaseDate() + " " + 
-                    g.getEstimatedOwners() + " " + 
-                    g.getPrice() + " " + 
-                    arrayToString(g.getSupportedLanguages()) + " " + 
-                    g.getMetacriticScores() + " " +
-                    g.getUserScore() + " " +
-                    g.getAchievements() + " " +
-                    arrayToString(g.getPublishers()) + " " +
-                    arrayToString(g.getDevelopers()) + " " +
-                    arrayToString(g.getCategories()) + " " +
-                    arrayToString(g.getGenres()) + " " +
-                    arrayToString(g.getTags());
+        resultado = id + " " +
+                name + " " +
+                releaseDate + " " +
+                estimatedOwners + " " +
+                price + " " +
+                arrayToString(supportedLanguages) + " " +
+                metacriticScores + " " +
+                userScore + " " +
+                achievements + " " +
+                arrayToString(publishers) + " " +
+                arrayToString(developers) + " " +
+                arrayToString(categories) + " " +
+                arrayToString(genres) + " " +
+                arrayToString(tags);
         return resultado;
     }
 
     // Método auxiliar para imprimir arrays
-    public String arrayToString(String[] array){
+    public String arrayToString(String[] array) {
         String resultado = "[";
-        for(int i = 0; i < array.length; i++){
+        for (int i = 0; i < array.length; i++) {
             resultado += array[i];
-            if(i < array.length - 1){
+            if (i < array.length - 1) {
                 resultado += ", ";
             }
         }
@@ -115,85 +194,205 @@ class game{
     }
 
     // Método para ler o CSV
-    public static game lerCSV(String linha){
+    public static game lerCSV(String linha) {
 
-        // "atributos" é um vetor que recebe a linha, nele cada atributo é separado por vírgula, ou seja cada atributo é um índice do vetor
-        String[] atributos = linha.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1); // Regex para considerar vírgulas dentro de aspas
+        // "atributos" é um vetor que recebe a linha, nele cada atributo do game é um
+        // índice do vetor
+        String[] atributos = linha.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1); // Regex para considerar vírgulas
+                                                                                   // dentro de aspas
 
         game g = new game(); // Cria um novo objeto game para cada linha lida
 
-        // Preenchendo os atributos do objeto game, usando os índices do vetor "atributos"
+        // Preenchendo os atributos do objeto game, usando os índices do vetor
+        // "atributos"
         // ID
         g.setID(Integer.parseInt(atributos[0])); // Converte o String do índice 0 para int e atribui ao ID
-        
+
         // Name
         g.setName(atributos[1]);
 
         // Release date
-        g.setReleaseDate(verificarData(atributos[2])); // Verifica se o dia e o mês estão vazios, se estiverem adiciona '01' a eles
+        g.setReleaseDate(verificarData(atributos[2])); // Verifica se o dia e o mês estão vazios, se estiverem adiciona
+                                                       // '01' a eles
 
         // Estimated owners
         g.setEstimatedOwners(removeVirgulas(atributos[3])); // Remove as vírgulas do número e converte para int
 
         // Price
+        g.setPrice(verificaPreco(atributos[4])); // Verifica se o preço for "Free to Play" atribui 0.0
 
         // Supported languages
-        // Metacritic scores
-        // User score
-        // Achievements
-        // Publishers
-        // Developers
-        // Categories
-        // Genres
-        // Tags
+        g.setSupportedLanguages(separarListaDeStrings(atributos[5]));
 
-        
-        game g = new game(); // Cria um novo objeto game
+        // Metacritic scores
+        if (atributos[6].equals("")) { // Se o campo estiver vazio, atribui -1
+            g.setMetacriticScores(-1);
+        } else {
+            g.setMetacriticScores(Integer.parseInt(atributos[6])); // Converte para int e atribui
+        }
+        // User score
+        if (atributos[7].equals("tbd") || atributos[7].equals("")) { // Se o campo estiver vazio ou for "NaN", atribui
+                                                                     // -1.0
+            g.setUserScore(-1.0f);
+        } else {
+            g.setUserScore(Float.parseFloat(atributos[7])); // Converte para float e atribui
+        }
+        // Achievements
+        if (atributos[8].equals("")) { // Se o campo estiver vazio, atribui -1
+            g.setAchievements(0);
+        } else {
+            g.setAchievements(Integer.parseInt(atributos[8])); // Converte para int e atribui
+        }
+        // Publishers, Developers, Categories, Genres e Tags
+        if (atributos.length > 9)
+            g.setPublishers(separarListaDeStrings(atributos[9]));
+        if (atributos.length > 10)
+            g.setDevelopers(separarListaDeStrings(atributos[10]));
+        if (atributos.length > 11)
+            g.setCategories(separarListaDeStrings(atributos[11]));
+        if (atributos.length > 12)
+            g.setGenres(separarListaDeStrings(atributos[12]));
+        if (atributos.length > 13)
+            g.setTags(separarListaDeStrings(atributos[13]));
 
         return g;
 
     }
 
-    // Caso o dia e/ou o mês estejam vazios, adiciona '01' à eles, sem replace e nem substring
-    public static String verificarData(String data){
-        // Como a data vem numa string no formato "Oct 18, 2018" devemos separar o mês, dia e ano
+    // Caso o dia e/ou o mês estejam vazios, adiciona '01' à eles
+    public static String verificarData(String data) {
+
+        // Como a data vem numa string no formato "Oct 18, 2018" devemos separar o mês,
+        // dia e ano
         String[] partes = data.split(" ");
-        
-        String mes = partes[0];
-        String dia = partes[1].replace(",", ""); // Remove a vírgula do dia
-        String ano = partes[2];
-
-        // Verifica se o dia está vazio
-        if(dia.equals("")){
-            dia = "01";
+        String dia = "01", mes = "01", ano = "1900"; // Inicializa dia e mês com '01' e ano com '1900' para caso estejam
+                                                     // vazios
+        if (partes.length == 3) { // Se tiver dia, mês e ano
+            mes = converterMesParaNumero(partes[0]); // Mês é a primeira parte, convertendo para número
+            dia = partes[1].replace(",", ""); // Dia é a segunda parte, removendo a vírgula
+            ano = partes[2]; // Ano é a terceira parte
+        } else if (partes.length == 2) { // Se a data tiver apenas mês e ano
+            mes = converterMesParaNumero(partes[0]);
+            ano = partes[1];
+        } else if (partes.length == 1) { // Se a data tiver apenas o ano
+            ano = partes[0];
         }
-        // Verifica se o mês está vazio
-        if(mes.equals("")){
-            mes = "Jan"; // Se o mês estiver vazio, atribui "Jan" (Janeiro) a ele
-        }
 
-        // Retorna a data no formato dd/mm/yyyy
+        if (dia.length() == 1)
+            dia = "0" + dia;
+        if (mes.length() == 1)
+            mes = "0" + mes;
+
         return dia + "/" + mes + "/" + ano;
+    }
 
+    // Converte o mês de string para número
+    public static String converterMesParaNumero(String mes) {
+        switch (mes) {
+            case "Jan":
+                return "01";
+            case "Feb":
+                return "02";
+            case "Mar":
+                return "03";
+            case "Apr":
+                return "04";
+            case "May":
+                return "05";
+            case "Jun":
+                return "06";
+            case "Jul":
+                return "07";
+            case "Aug":
+                return "08";
+            case "Sep":
+                return "09";
+            case "Oct":
+                return "10";
+            case "Nov":
+                return "11";
+            case "Dec":
+                return "12";
+            default:
+                return "01";
+        }
     }
 
     // Método para remover as vírgulas dos números, sem usar replace e nem substring
-    public static int removeVirgulas(String numero){
+    public static int removeVirgulas(String numero) {
         String resultado = "";
-        for(int i = 0; i < numero.length(); i++){
-            if(numero.charAt(i) != ','){
+        for (int i = 0; i < numero.length(); i++) {
+            if (numero.charAt(i) != ',') {
                 resultado += numero.charAt(i);
             }
         }
         return Integer.parseInt(resultado); // Converte o resultado para int e retorna
     }
 
+    // Verifica se o preço é "Free to Play", se for retorna 0.0, se não apenas converte para float e retorna
+    public static float verificaPreco(String preco) {
+        if (preco.equals("Free to Play")) {
+            return 0.0f;
+        } else {
+            return Float.parseFloat(preco);
+        }
+    }
 
+    // Separa uma lista de strings que estão no formato ["str1", "str2", "str3"] em um array de strings
+    public static String[] separarListaDeStrings(String campo) {
+        if (campo == null || campo.equals(""))
+            return new String[0];
+        campo = campo.replace("[", "").replace("]", "").replace("\"", "").trim();
+        if (campo.equals(""))
+            return new String[0];
+        return campo.split(",");
+    }
 
+    // Main {
+    public static void main(String[] args) {
+        String arquivo = "C:\\Users\\Matheus\\Downloads\\games.csv"; // Nome do arquivo CSV
+        game[] jogos = new game[5000]; // Array para armazenar os jogos
+        int qtdJogos = 0; // Contador de jogos lidos
 
+        // Lendo o arquivo CSV
 
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(arquivo)); // BufferedReader para ler o arquivo
+            String linha; // Variável para armazenar cada linha lida
+            br.readLine(); // Lê a primeira linha (cabeçalho) e descarta
 
+            while ((linha = br.readLine()) != null && qtdJogos < jogos.length) { // Lê cada linha até o final do arquivo
+                jogos[qtdJogos++] = game.lerCSV(linha); // Chama o método lerCSV para criar um objeto game e armazena no
+                                                        // array "jogos" de objetos "game"
+            }
 
+            br.close(); // Fecha o BufferedReader
+        } catch (IOException e) { // Tratamento de exceção
+            System.out.println("Erro ao abrir arquivo!");
+        }
 
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            String entrada = sc.nextLine(); // Lê o ID do jogo a ser buscado
+            if (entrada.equals("FIM"))
+                break; // Se a entrada for "FIM", encerra o loop
 
+            int idBuscado = Integer.parseInt(entrada); // Converte a entrada para int
+
+            game encontrado = null; // Variável para armazenar o jogo encontrado
+            for (int i = 0; i < qtdJogos; i++) { // Percorre o array de jogos
+                if (jogos[i].getID() == idBuscado) { // Se o ID do jogo for igual ao ID buscado
+                    encontrado = jogos[i]; // Armazena o jogo encontrado
+                    break;
+                }
+            }
+
+            if (encontrado != null) { // Se o jogo foi encontrado, imprime os detalhes
+                System.out.println(encontrado); // toString é chamado implicitamente
+            } else {
+                System.out.println("Jogo não encontrado!"); // Mensagem caso o jogo não seja encontrado
+            }
+        }
+        sc.close(); // Fecha o Scanner
+    }
 }
