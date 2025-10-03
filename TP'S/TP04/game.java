@@ -1,8 +1,6 @@
 // Matheus Gouvêa Ramalho - TP04
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 public class game {
@@ -162,22 +160,20 @@ public class game {
     // toString: Formatação de saída
     @Override
     public String toString() {
-        String resultado;
-        resultado = id + " " +
-                name + " " +
-                releaseDate + " " +
-                estimatedOwners + " " +
-                price + " " +
-                arrayToString(supportedLanguages) + " " +
-                metacriticScores + " " +
-                userScore + " " +
-                achievements + " " +
-                arrayToString(publishers) + " " +
-                arrayToString(developers) + " " +
-                arrayToString(categories) + " " +
-                arrayToString(genres) + " " +
-                arrayToString(tags);
-        return resultado;
+        return "=> " + id + " ## " +
+                name + " ## " +
+                releaseDate + " ## " +
+                estimatedOwners + " ## " +
+                price + " ## " +
+                arrayToString(supportedLanguages) + " ## " +
+                metacriticScores + " ## " +
+                userScore + " ## " +
+                achievements + " ## " +
+                arrayToString(publishers) + " ## " +
+                arrayToString(developers) + " ## " +
+                arrayToString(categories) + " ## " +
+                arrayToString(genres) + " ## " +
+                arrayToString(tags) + " ##";
     }
 
     // Método auxiliar para imprimir arrays
@@ -262,11 +258,9 @@ public class game {
     // Caso o dia e/ou o mês estejam vazios, adiciona '01' à eles
     public static String verificarData(String data) {
 
-        // Como a data vem numa string no formato "Oct 18, 2018" devemos separar o mês,
-        // dia e ano
+        // Como a data vem numa string no formato "Oct 18, 2018" devemos separar o mês, dia e ano
         String[] partes = data.split(" ");
-        String dia = "01", mes = "01", ano = "1900"; // Inicializa dia e mês com '01' e ano com '1900' para caso estejam
-                                                     // vazios
+        String dia = "01", mes = "01", ano = "1900"; // Inicializa dia e mês com '01' e ano com '1900' para caso estejam vazios
         if (partes.length == 3) { // Se tiver dia, mês e ano
             mes = converterMesParaNumero(partes[0]); // Mês é a primeira parte, convertendo para número
             dia = partes[1].replace(",", ""); // Dia é a segunda parte, removendo a vírgula
@@ -362,8 +356,7 @@ public class game {
             br.readLine(); // Lê a primeira linha (cabeçalho) e descarta
 
             while ((linha = br.readLine()) != null && qtdJogos < jogos.length) { // Lê cada linha até o final do arquivo
-                jogos[qtdJogos++] = game.lerCSV(linha); // Chama o método lerCSV para criar um objeto game e armazena no
-                                                        // array "jogos" de objetos "game"
+                jogos[qtdJogos++] = game.lerCSV(linha); // Chama o método lerCSV para criar um objeto game e armazena no array "jogos" de objetos "game"
             }
 
             br.close(); // Fecha o BufferedReader
@@ -372,27 +365,38 @@ public class game {
         }
 
         Scanner sc = new Scanner(System.in);
+
+        int[] idsBuscados = new int[1000]; // espaço pra até 1000 entradas
+        int qtdIds = 0; // contador de quantos IDs foram lidos
+
+        // 1. Lê tudo e guarda no array
         while (true) {
-            String entrada = sc.nextLine(); // Lê o ID do jogo a ser buscado
+            String entrada = sc.nextLine();
             if (entrada.equals("FIM"))
-                break; // Se a entrada for "FIM", encerra o loop
+                break;
 
-            int idBuscado = Integer.parseInt(entrada); // Converte a entrada para int
+            idsBuscados[qtdIds] = Integer.parseInt(entrada);
+            qtdIds++;
+        }
+        sc.close();
 
-            game encontrado = null; // Variável para armazenar o jogo encontrado
-            for (int i = 0; i < qtdJogos; i++) { // Percorre o array de jogos
-                if (jogos[i].getID() == idBuscado) { // Se o ID do jogo for igual ao ID buscado
-                    encontrado = jogos[i]; // Armazena o jogo encontrado
+        // 2. Agora percorre o array e imprime os resultados
+        for (int j = 0; j < qtdIds; j++) {
+            int idBuscado = idsBuscados[j];
+            game encontrado = null;
+
+            for (int i = 0; i < qtdJogos; i++) {
+                if (jogos[i].getID() == idBuscado) {
+                    encontrado = jogos[i];
                     break;
                 }
             }
 
-            if (encontrado != null) { // Se o jogo foi encontrado, imprime os detalhes
-                System.out.println(encontrado); // toString é chamado implicitamente
+            if (encontrado != null) {
+                System.out.println(encontrado);
             } else {
-                System.out.println("Jogo não encontrado!"); // Mensagem caso o jogo não seja encontrado
+                System.out.println("Jogo não encontrado!");
             }
         }
-        sc.close(); // Fecha o Scanner
     }
 }
