@@ -157,7 +157,7 @@ public class game {
         this.tags = tags;
     }
 
-    // toString: Formatação de saída
+    // toString: Formata a saída
     @Override
     public String toString() {
         return "=> " + id + " ## " +
@@ -192,30 +192,27 @@ public class game {
     // Método para ler o CSV
     public static game lerCSV(String linha) {
 
-        // "atributos" é um vetor que recebe a linha, nele cada atributo do game é um
-        // índice do vetor
-        String[] atributos = linha.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1); // Regex para considerar vírgulas
-                                                                                   // dentro de aspas
+        // "atributos" é um vetor que recebe a linha, nele, cada atributo do game é um índice do vetor
+        String[] atributos = linha.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1); // Regex para considerar vírgulas dentro de aspas
 
-        game g = new game(); // Cria um novo objeto game para cada linha lida
+        game g = new game(); // Cria um novo objeto da classe game para cada linha lida
 
-        // Preenchendo os atributos do objeto game, usando os índices do vetor
-        // "atributos"
+        // Preenchendo os atributos do objeto da classe game, usando os índices do vetor "atributos"
+        
         // ID
-        g.setID(Integer.parseInt(atributos[0])); // Converte o String do índice 0 para int e atribui ao ID
+        g.setID(Integer.parseInt(atributos[0])); // Converte a String do índice 0 para "int" e atribui ao ID do game
 
         // Name
         g.setName(atributos[1]);
 
         // Release date
-        g.setReleaseDate(verificarData(atributos[2])); // Verifica se o dia e o mês estão vazios, se estiverem adiciona
-                                                       // '01' a eles
+        g.setReleaseDate(verificarData(atributos[2])); // Verifica se o dia e o mês estão vazios, se estiverem adiciona '01' a eles
 
         // Estimated owners
-        g.setEstimatedOwners(removeVirgulas(atributos[3])); // Remove as vírgulas do número e converte para int
+        g.setEstimatedOwners(removeVirgulas(atributos[3])); // Remove as vírgulas do número e converte para "int"
 
         // Price
-        g.setPrice(verificaPreco(atributos[4])); // Verifica se o preço for "Free to Play" atribui 0.0
+        g.setPrice(verificaPreco(atributos[4])); // Verifica se o preço é "Free to Play" e se for atribui 0.0
 
         // Supported languages
         g.setSupportedLanguages(separarListaDeStrings(atributos[5]));
@@ -224,22 +221,25 @@ public class game {
         if (atributos[6].equals("")) { // Se o campo estiver vazio, atribui -1
             g.setMetacriticScores(-1);
         } else {
-            g.setMetacriticScores(Integer.parseInt(atributos[6])); // Converte para int e atribui
+            g.setMetacriticScores(Integer.parseInt(atributos[6])); // Converte para "int" e atribui à Metacritic Score
         }
+        
         // User score
-        if (atributos[7].equals("tbd") || atributos[7].equals("")) { // Se o campo estiver vazio ou for "NaN", atribui
-                                                                     // -1.0
+        if (atributos[7].equals("tbd") || atributos[7].equals("")) { // Se o campo estiver vazio ou for "tbd", atribui -1.0
             g.setUserScore(-1.0f);
         } else {
-            g.setUserScore(Float.parseFloat(atributos[7])); // Converte para float e atribui
+            g.setUserScore(Float.parseFloat(atributos[7])); // Converte para float e atribui à User Score
         }
+        
         // Achievements
-        if (atributos[8].equals("")) { // Se o campo estiver vazio, atribui -1
+        if (atributos[8].equals("")) { // Se o campo estiver vazio, atribui 0
             g.setAchievements(0);
         } else {
-            g.setAchievements(Integer.parseInt(atributos[8])); // Converte para int e atribui
+            g.setAchievements(Integer.parseInt(atributos[8])); // Converte para "int" e atribui à Achievements
         }
+        
         // Publishers, Developers, Categories, Genres e Tags
+        
         if (atributos.length > 9)
             g.setPublishers(separarListaDeStrings(atributos[9]));
         if (atributos.length > 10)
@@ -312,7 +312,7 @@ public class game {
         }
     }
 
-    // Método para remover as vírgulas dos números, sem usar replace e nem substring
+    // Método para remover as vírgulas dos números
     public static int removeVirgulas(String numero) {
         String resultado = "";
         for (int i = 0; i < numero.length(); i++) {
@@ -320,7 +320,7 @@ public class game {
                 resultado += numero.charAt(i);
             }
         }
-        return Integer.parseInt(resultado); // Converte o resultado para int e retorna
+        return Integer.parseInt(resultado); // Converte o resultado para "int" e retorna
     }
 
     // Verifica se o preço é "Free to Play", se for retorna 0.0, se não apenas converte para float e retorna
@@ -346,7 +346,7 @@ public class game {
     public static void main(String[] args) {
         String arquivo = "/tmp/games.csv"; // Nome do arquivo CSV
         game[] jogos = new game[5000]; // Array para armazenar os jogos
-        int qtdJogos = 0; // Contador de jogos lidos
+        int qtdJogos = 0; 
 
         // Lendo o arquivo CSV
 
@@ -356,20 +356,20 @@ public class game {
             br.readLine(); // Lê a primeira linha (cabeçalho) e descarta
 
             while ((linha = br.readLine()) != null && qtdJogos < jogos.length) { // Lê cada linha até o final do arquivo
-                jogos[qtdJogos++] = game.lerCSV(linha); // Chama o método lerCSV para criar um objeto game e armazena no array "jogos" de objetos "game"
+                jogos[qtdJogos++] = game.lerCSV(linha); // Chama o método lerCSV para criar um objeto da classe game e armazena no array "jogos"
             }
 
             br.close(); // Fecha o BufferedReader
-        } catch (IOException e) { // Tratamento de exceção
+        } catch (IOException e) { 
             System.out.println("Erro ao abrir arquivo!");
         }
 
         Scanner sc = new Scanner(System.in);
 
-        int[] idsBuscados = new int[1000]; // espaço pra até 1000 entradas
-        int qtdIds = 0; // contador de quantos IDs foram lidos
+        int[] idsBuscados = new int[1000]; 
+        int qtdIds = 0; 
 
-        // 1. Lê tudo e guarda no array
+        // Lê tudo e guarda no array
         while (true) {
             String entrada = sc.nextLine();
             if (entrada.equals("FIM"))
@@ -380,7 +380,7 @@ public class game {
         }
         sc.close();
 
-        // 2. Agora percorre o array e imprime os resultados
+        // Agora percorre o array e imprime os resultados
         for (int j = 0; j < qtdIds; j++) {
             int idBuscado = idsBuscados[j];
             game encontrado = null;
