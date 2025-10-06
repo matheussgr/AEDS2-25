@@ -344,7 +344,7 @@ public class game {
 
     // Main {
     public static void main(String[] args) {
-        String arquivo = "C:\\Users\\Matheus\\Downloads\\games.csv"; // Nome do arquivo CSV
+        String arquivo = "/tmp/games.csv"; // Nome do arquivo CSV
         game[] jogos = new game[5000]; // Array para armazenar os jogos
         int qtdJogos = 0; // Contador de jogos lidos
 
