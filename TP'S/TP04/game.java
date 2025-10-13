@@ -215,7 +215,7 @@ public class game {
         g.setPrice(verificaPreco(atributos[4])); // Verifica se o preço é "Free to Play" e se for atribui 0.0
 
         // Supported languages
-        g.setSupportedLanguages(separarListaDeStrings(atributos[5]));
+        g.setSupportedLanguages(separarListaDeStringsLinguagens(atributos[5]));
 
         // Metacritic scores
         if (atributos[6].equals("")) { // Se o campo estiver vazio, atribui -1
@@ -257,6 +257,8 @@ public class game {
 
     // Caso o dia e/ou o mês estejam vazios, adiciona '01' à eles
     public static String verificarData(String data) {
+           
+        data = data.replace("\"", "").trim(); // Remove aspas e espaços em branco
 
         // Como a data vem numa string no formato "Oct 18, 2018" devemos separar o mês, dia e ano
         String[] partes = data.split(" ");
@@ -337,6 +339,15 @@ public class game {
         if (campo == null || campo.equals(""))
             return new String[0];
         campo = campo.replace("[", "").replace("]", "").replace("\"", "").trim();
+        if (campo.equals(""))
+            return new String[0];
+        return campo.split(",");
+    }
+
+    public static String[] separarListaDeStringsLinguagens(String campo) {
+        if (campo == null || campo.equals(""))
+            return new String[0];
+        campo = campo.replace("[", "").replace("]", "").replace("\"", "").replace("'", "").trim();
         if (campo.equals(""))
             return new String[0];
         return campo.split(",");
