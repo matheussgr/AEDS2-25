@@ -2,6 +2,7 @@
 
 import java.io.*;
 import java.util.Scanner;
+import java.util.Date;
 
 public class game {
 
@@ -355,7 +356,7 @@ public class game {
     }
 
 // Ordenação usando o Algoritmo de Seleção
-
+// Selection Sort por Nome para ordenar o array de jogos
     public static void selectionSortNome(game[] array, int n){
         for(int i = 0; i < (n - 1); i++){
             int menor = i;
@@ -370,22 +371,25 @@ public class game {
         }
     }
 
-    public static void selectionSortId(game[] array, int n){
+// Selection Sort por ID para ordenar o array de ID's lidos
+    public static void selectionSortID(int[] array, int n){
         for(int i = 0; i < (n - 1); i++){
             int menor = i;
             for(int j = i + 1; j < n; j++){
-                if(array[j].getId() < array[menor].getId()){ // Compara os IDs dos jogos
+                // Compara IDs (int)
+                if(array[j] < array[menor]){ 
                     menor = j;
                 }
             }
-            game temp = array[i];  // Swap
+            int temp = array[i]; 
             array[i] = array[menor];
             array[menor] = temp;
         }
     }
 
-//Pesquisa Binária
-    public static boolean pesquisaBinariaNome(game[] array, int n, String nomebuscado, long[] comparacoes){
+
+// Pesquisa Binária por Nome
+    public static int pesquisaBinariaNome(game[] array, int n, String nomebuscado, int[] comparacoes){
         nomebuscado = nomebuscado.trim(); // Remove espaços em branco no início e no fim da string
         int esq = 0;
         int dir = n - 1;
@@ -397,44 +401,44 @@ public class game {
             comparacoes[0]++; // Incrementa o contador de comparações, usei um array para simular passagem por referência
 
             if (comparacao == 0) {
-                return true; 
+                return meio; // Nome encontrado na lista de jogos
             } else if (comparacao < 0) {
                 dir = meio - 1; 
             } else {
                 esq = meio + 1; 
             }
         }
-        return false;         
+        return -1; // Nome não encontrado     
     }
 
-    public static boolean pesquisaBinariaId(game[] array, int n, int idBuscado, long[] comparacoes){
+// Pesquisa Binária por ID
+    public static boolean pesquisaBinariaID(int[] array, int n, int idBuscado, int[] comparacoes){
         int esq = 0;
         int dir = n - 1;
-        int meio;
 
         while (esq <= dir) {
-            meio = (esq + dir) / 2;
-            int idAtual = array[meio].getID(); 
-            comparacoes[0]++;
+            int meio = (esq + dir) / 2;
+            int idAtual = array[meio];
+            comparacoes[0]++; 
             
             if (idBuscado == idAtual) {
-                return true; 
+                return true; // ID encontrado na lista de IDs lidos
             } else if (idBuscado < idAtual) {
                 dir = meio - 1; 
             } else {
                 esq = meio + 1; 
             }
         }
-        return false;
+        return false; // ID não encontrado
     }
 
-    // Main {
+    // Main 
     public static void main(String[] args) {
         String arquivo = "/tmp/games.csv"; // Nome do arquivo CSV
         game[] jogos = new game[5000]; // Array para armazenar os jogos
         int qtdJogos = 0; 
 
-        long numeroComparacoes = 0;
+        int numeroComparacoes = 0;
         long inicioBusca = 0;
         long fimBusca = 0;
 
@@ -456,19 +460,22 @@ public class game {
 
         Scanner sc = new Scanner(System.in);
 
-        // Leitura dos IDs e Nomes dos jogos a serem pesquisados
-        
+        // Leitura dos IDs 
+
         int[] idsLidos = new int[1000]; 
         int qtdIdsLidos = 0; 
         
         while (sc.hasNextLine()) {
             String entrada = sc.nextLine();
             if (entrada.equals("FIM")) break;
+            
             try {
                 idsLidos[qtdIdsLidos] = Integer.parseInt(entrada);
                 qtdIdsLidos++;
-            } catch (NumberFormatException e) { }
+            } catch (NumberFormatException e) {}
         }
+
+        // Leitura dos Nomes serem pesquisados
 
         String[] nomesBuscados = new String[1000]; 
         int qtdNomes = 0;                          
@@ -482,58 +489,54 @@ public class game {
         }
         sc.close();
 
-        // Ordenação usando Seleção
-        game.selectionSort(jogos, qtdJogos);
+        game.selectionSortNome(jogos, qtdJogos); // Ordena o array de jogos pelo Nome antes de realizar as buscas
+        game.selectionSortID(idsLidos, qtdIdsLidos); // Ordena o array de IDs lidos
 
-        // Pesquisa Binária
-        int[] IdsBuscados = new String[1000]; 
-        int qtdIds = 0;
-        
-        while (sc.hasNextLine()) {
-             String entrada = sc.nextLine();
-             if (entrada.equals("FIM"))
-                 break;
-
-            IdsBuscados[qtdIds] = Integer.parseInt(entrada);
-            qtdIds++;
-        }
-        sc.close();   
-        
-        // Variáveis para cronometragem e contagem de comparações
-
-        int[] contadorComparacoes = {0};  // Contador de comparações passado por referência
-        
-        inicioBuscas = new Date().getTime(); // Início da cronometragem
-
+        int[] contadorComparacao = {0}; // É um array para simular passagem por referência, ou seja, para não perder o valor ao sair do método
+        inicioBusca = new Date().getTime(); // Marca o início da busca
+      
         for (int i = 0; i < qtdNomes; i++) {
-            int ID = IdsBuscados[i];
+            String nomeBusca = nomesBuscados[i];
+            boolean resultadoFinal = false;
             
-            // Realiza a Busca Binária
-            boolean posicao = game.binarySearch(jogos, qtdJogos, nome, contadorComparacoes);
+            // BUSCA POR NOME (No array de jogos do CSV)
+            int indiceJogo = game.pesquisaBinariaNome(jogos, qtdJogos, nomeBusca, contadorComparacao);
 
-            // Imprime a saída SIM ou NÃO
-            if (posicao == true) {
+            if (indiceJogo != -1) {
+                // Jogo encontrado no CSV. Agora pegamos o ID dele.
+                int idDoJogo = jogos[indiceJogo].getID();
+                
+                // 4.2. BUSCA POR ID (No array de IDs lidos da primeira parte)
+                resultadoFinal = game.pesquisaBinariaID(idsLidos, qtdIdsLidos, idDoJogo, contadorComparacao);
+            }
+            
+            // 4.3. IMPRESSÃO DA SAÍDA
+            if (resultadoFinal) {
                 System.out.println("SIM");
             } else {
-                System.out.println("NÃO");
+                System.out.println("NAO");
             }
         }
-        
-        fimBuscas = new Date().getTime(); // Fim da cronometragem
-        numeroComparacoes = contadorComparacoes[0];
 
-        // Cria o arquivo de log
+        fimBusca = new Date().getTime(); // Marca o fim da busca
+        numeroComparacoes = contadorComparacao[0]; // Recupera o número total de comparações feitas durante as buscas
+
+        
+
+        // Criação do arquivo de log
+
         String matricula = "885473";
 
-        long tempoExecucao = fimBuscas - inicioBuscas; 
+        long tempoExecucao = fimBusca - inicioBusca;
         
         try (PrintWriter log = new PrintWriter(new FileWriter(matricula + "_binaria.txt"))) { 
             // Matrícula \t Tempo \t Número de comparações
-            log.println(matricula + "\t" + tempoExecucao + "\t" + numComparacoes);
+            log.println(matricula + "\t" + tempoExecucao + "\t" + numeroComparacoes);
         } catch (IOException e) {
             System.out.println("Erro");
         }
 
 
 
+    }
 }
