@@ -389,7 +389,7 @@ int main(void) {
     
     // Leitura dos IDs até "FIM"
     while (fgets(entrada, sizeof(entrada), stdin)) {
-        entrada[strcspn(entrada, "\r\n")] = 0;
+        entrada[strcspn(entrada, "\r\n")] = '\0'; // "strcspn" procura o primeiro \r ou \n na string "entrada", depois ele substitui esse caractere por '\0', cortando a string nesse ponto, eliminando a parte que vem depois 
         if (entrada[0] == '\0') continue;
         if (strcmp(entrada, "FIM") == 0) break;
 
