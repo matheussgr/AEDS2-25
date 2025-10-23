@@ -1,0 +1,1 @@
+Matrícula:885473	Tempo de execução em ms:2	Número de comparações:503

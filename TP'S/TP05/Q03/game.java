@@ -1,8 +1,8 @@
-// Matheus Gouvêa Ramalho - TP04
+// Matheus Gouvêa Ramalho - TP05 - Q03 - Heapsort
 
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.Scanner;
-import java.util.Date;
 
 public class game {
 
@@ -21,6 +21,12 @@ public class game {
     private String[] categories;
     private String[] genres;
     private String[] tags;
+
+    // --- Atributos Estáticos para o Log ---
+    private static long comparacoes = 0;
+    private static long movimentacoes = 0;
+    private static long tempoExecucao = 0;
+    private static final String MATRICULA = "885473";
 
     // Construtores
     public game() {
@@ -345,7 +351,6 @@ public class game {
         return campo.split(",");
     }
 
-    // Separa uma lista de strings que estão no formato ["str1", "str2", "str3"] em um array de strings, porém também tira o ''
     public static String[] separarListaDeStringsLinguagens(String campo) {
         if (campo == null || campo.equals(""))
             return new String[0];
@@ -355,92 +360,127 @@ public class game {
         return campo.split(",");
     }
 
-// Ordenação usando o Algoritmo de Seleção
-// Selection Sort por Nome para ordenar o array de jogos
-    public static void selectionSortNome(game[] array, int n){
-        for(int i = 0; i < (n - 1); i++){
-            int menor = i;
-            for(int j = i + 1; j < n; j++){
-                if(array[j].getName().compareTo(array[menor].getName()) < 0){ // compareTo é uma função da classe String que compara duas strings de acordo com a tabela ASCII
-                    menor = j;
-                }
-            }
-            game temp = array[i];  // Swap
-            array[i] = array[menor];
-            array[menor] = temp;
-        }
+    // Métodos para ordenação usando Heap Sort
+
+    public static void swap(game[] array, int i, int j) {
+        game temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+        movimentacoes += 3; 
     }
 
-// Selection Sort por ID para ordenar o array de ID's lidos
-    public static void selectionSortID(int[] array, int n){
-        for(int i = 0; i < (n - 1); i++){
-            int menor = i;
-            for(int j = i + 1; j < n; j++){
-                // Compara IDs (int)
-                if(array[j] < array[menor]){ 
-                    menor = j;
-                }
-            }
-            int temp = array[i]; 
-            array[i] = array[menor];
-            array[menor] = temp;
-        }
-    }
-
-
-// Pesquisa Binária por Nome
-    public static int pesquisaBinariaNome(game[] array, int n, String nomebuscado, int[] comparacoes){
-        nomebuscado = nomebuscado.trim(); // Remove espaços em branco no início e no fim da string
-        int esq = 0;
-        int dir = n - 1;
-        int meio;
-
-        while (esq <= dir) {
-            meio = (esq + dir) / 2;
-            int comparacao = nomebuscado.compareTo(array[meio].getName());
-            comparacoes[0]++; // Incrementa o contador de comparações, usei um array para simular passagem por referência
-
-            if (comparacao == 0) {
-                return meio; // Nome encontrado na lista de jogos
-            } else if (comparacao < 0) {
-                dir = meio - 1; 
+    // Compara dois jogos com critério Estimated Owners e desempate por ID
+    public static boolean isMaior(game gameA, game gameB) {
+        comparacoes++; // Comparação entre os Estimated Owners 
+        if (gameA.getEstimatedOwners() != gameB.getEstimatedOwners()) {
+            if (gameA.getEstimatedOwners() > gameB.getEstimatedOwners()) {
+                return true;
             } else {
-                esq = meio + 1; 
+                return false;
             }
         }
-        return -1; // Nome não encontrado     
+        
+        comparacoes++; // Comparação de ID (desempate)
+        if (gameA.getID() > gameB.getID()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-// Pesquisa Binária por ID
-    public static boolean pesquisaBinariaID(int[] array, int n, int idBuscado, int[] comparacoes){
-        int esq = 0;
-        int dir = n - 1;
+    // Heap Sort em si
 
-        while (esq <= dir) {
-            int meio = (esq + dir) / 2;
-            int idAtual = array[meio];
-            comparacoes[0]++; 
+    public static void heapsort(game[] array, int n) {
+    
+    game[] tmp = new game[n + 1];
+    for(int i = 0; i < n; i++){
+        tmp[i+1] = array[i]; 
+    }
+    
+    for(int tamHeap = 2; tamHeap <= n; tamHeap++){
+        construir(tmp, tamHeap); 
+    }
+
+    int tamHeap = n;
+    while(tamHeap > 1){
+        swap(tmp, 1, tamHeap--);
+        reconstruir(tmp, tamHeap);
+    }
+
+    for(int i = 0; i < n; i++){
+        array[i] = tmp[i+1]; 
+    }
+    
+
+}
+
+    // Método construir
+    public static void construir(game[] array, int tamHeap){
+        for(int i = tamHeap; i > 1; i /= 2){
+            comparacoes++; // Compara array[i] > array[i/2]
+            if (isMaior(array[i], array[i/2])) {
+                swap(array, i, i/2);
+            } else {
+                break; 
+            }
+        }
+    }
+    
+    // Método reconstruir 
+    public static void reconstruir(game[] array, int tamHeap){
+        int i = 1;
+        while(i <= (tamHeap/2)){
+            int filho = getMaiorFilho(array, i, tamHeap);
             
-            if (idBuscado == idAtual) {
-                return true; // ID encontrado na lista de IDs lidos
-            } else if (idBuscado < idAtual) {
-                dir = meio - 1; 
-            } else {
-                esq = meio + 1; 
+            comparacoes++; // Compara array[i] < array[filho]
+            if(isMaior(array[filho], array[i])){ 
+                swap(array, i, filho);
+                i = filho;
+            }else{
+                break;
             }
         }
-        return false; // ID não encontrado
+    }
+    
+    // Método para obter o maior filho
+    public static int getMaiorFilho(game[] array, int i, int tamHeap){
+        int filho;
+        
+        if (2*i == tamHeap) {
+            filho = 2*i;
+        } else {
+            comparacoes++; // Compara array[2*i] > array[2*i+1]
+            if (isMaior(array[2*i], array[2*i+1])) {
+                filho = 2*i;
+            } else {
+                filho = 2*i + 1;
+            }
+        }
+        return filho;
     }
 
-    // Main 
+    public static void criarLog() {
+        String nomeArquivo = MATRICULA + "_heapsort.txt";
+        DecimalFormat df = new DecimalFormat("0.000");
+        
+        // Formato: Matricula \t Comparações \t Movimentações \t Tempo (ms)
+        String logData = MATRICULA + "\t" + 
+                         comparacoes + "\t" + 
+                         movimentacoes + "\t" + 
+                         df.format((double)tempoExecucao / 1000000.0);
+
+        try (FileWriter fw = new FileWriter(nomeArquivo)) {
+            fw.write(logData);
+        } catch (IOException e) {
+            System.err.println("Erro ao escrever o arquivo de log: " + e.getMessage());
+        }
+    }
+
+    // Main {
     public static void main(String[] args) {
         String arquivo = "/tmp/games.csv"; // Nome do arquivo CSV
         game[] jogos = new game[5000]; // Array para armazenar os jogos
         int qtdJogos = 0; 
-
-        int numeroComparacoes = 0;
-        long inicioBusca = 0;
-        long fimBusca = 0;
 
         // Lendo o arquivo CSV
 
@@ -460,83 +500,46 @@ public class game {
 
         Scanner sc = new Scanner(System.in);
 
-        // Leitura dos IDs 
+        int[] idsBuscados = new int[1000]; 
+        int qtdIds = 0; 
 
-        int[] idsLidos = new int[1000]; 
-        int qtdIdsLidos = 0; 
-        
-        while (sc.hasNextLine()) {
+        // Lê tudo e guarda no array
+        while (true) {
             String entrada = sc.nextLine();
-            if (entrada.equals("FIM")) break;
-            
-            try {
-                idsLidos[qtdIdsLidos] = Integer.parseInt(entrada);
-                qtdIdsLidos++;
-            } catch (NumberFormatException e) {}
-        }
+            if (entrada.equals("FIM"))
+                break;
 
-        // Leitura dos Nomes serem pesquisados
-
-        String[] nomesBuscados = new String[1000]; 
-        int qtdNomes = 0;                          
-        
-        while (sc.hasNextLine()) {
-             String entrada = sc.nextLine();
-             if (entrada.equals("FIM")) break;
-            
-             nomesBuscados[qtdNomes] = entrada;
-             qtdNomes++;
+            idsBuscados[qtdIds] = Integer.parseInt(entrada);
+            qtdIds++;
         }
         sc.close();
 
-        game.selectionSortNome(jogos, qtdJogos); // Ordena o array de jogos pelo Nome antes de realizar as buscas
-        game.selectionSortID(idsLidos, qtdIdsLidos); // Ordena o array de IDs lidos
-
-        int[] contadorComparacao = {0}; // É um array para simular passagem por referência, ou seja, para não perder o valor ao sair do método
-        inicioBusca = new Date().getTime(); // Marca o início da busca
-      
-        for (int i = 0; i < qtdNomes; i++) {
-            String nomeBusca = nomesBuscados[i];
-            boolean resultadoFinal = false;
-            
-            // BUSCA POR NOME (No array de jogos do CSV)
-            int indiceJogo = game.pesquisaBinariaNome(jogos, qtdJogos, nomeBusca, contadorComparacao);
-
-            if (indiceJogo != -1) {
-                // Jogo encontrado no CSV. Agora pegamos o ID dele.
-                int idDoJogo = jogos[indiceJogo].getID();
-                
-                // 4.2. BUSCA POR ID (No array de IDs lidos da primeira parte)
-                resultadoFinal = game.pesquisaBinariaID(idsLidos, qtdIdsLidos, idDoJogo, contadorComparacao);
-            }
-            
-            // 4.3. IMPRESSÃO DA SAÍDA
-            if (resultadoFinal) {
-                System.out.println("SIM");
-            } else {
-                System.out.println("NAO");
+        game[] jogosParaOrdenar = new game[qtdIds];
+        for (int i = 0; i < qtdIds; i++) {
+            int idBuscado = idsBuscados[i];
+            for (int j = 0; j < qtdJogos; j++) {
+                if (jogos[j].getID() == idBuscado) {
+                    jogosParaOrdenar[i] = jogos[j];
+                    break;
+                }
             }
         }
 
-        fimBusca = new Date().getTime(); // Marca o fim da busca
-        numeroComparacoes = contadorComparacao[0]; // Recupera o número total de comparações feitas durante as buscas
-
+        // --- ORDENAÇÃO HEAPSORT E MEDIÇÃO DE TEMPO ---
         
-
-        // Criação do arquivo de log
-
-        String matricula = "885473";
-
-        long tempoExecucao = fimBusca - inicioBusca;
+        long inicio = System.nanoTime();
+        heapsort(jogosParaOrdenar, qtdIds);
+        long fim = System.nanoTime();
+        tempoExecucao = fim - inicio;
         
-        try (PrintWriter log = new PrintWriter(new FileWriter(matricula + "_binaria.txt"))) { 
-            // Matrícula \t Tempo \t Número de comparações
-            log.println(matricula + "\t" + tempoExecucao + "\t" + numeroComparacoes);
-        } catch (IOException e) {
-            System.out.println("Erro");
+        // --- SAÍDA E GERAÇÃO DO LOG ---
+
+        // Imprime os registros ordenados
+        for (int i = 0; i < qtdIds; i++) {
+            System.out.println(jogosParaOrdenar[i]);
         }
-
-
-
+        
+        // Gera o arquivo de log
+        criarLog();
     }
 }
