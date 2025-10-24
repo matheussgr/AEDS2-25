@@ -2,7 +2,10 @@
 
 import java.io.*;
 import java.text.DecimalFormat;
+<<<<<<< HEAD
 import java.util.Locale;
+=======
+>>>>>>> 6b75078089f7c94d1323c2ba01c146539f1b13c9
 import java.util.Scanner;
 
 public class game {
@@ -340,6 +343,7 @@ public class game {
         } else {
             return Float.parseFloat(preco);
         }
+<<<<<<< HEAD
     }
 
     // Separa uma lista de strings que estão no formato ["str1", "str2", "str3"] em um array de strings
@@ -365,6 +369,29 @@ public class game {
         return partes;
     }
 
+=======
+    }
+
+    // Separa uma lista de strings que estão no formato ["str1", "str2", "str3"] em um array de strings
+public static String[] separarListaDeStrings(String campo) {
+    if (campo == null || campo.equals(""))
+        return new String[0];
+        
+    campo = campo.replace("[", "").replace("]", "").replace("\"", "").trim();
+    
+    if (campo.equals(""))
+        return new String[0];
+    
+    String[] partes = campo.split(",");
+    
+    // CORREÇÃO: Aplicar trim() a cada parte
+    for (int i = 0; i < partes.length; i++) {
+        partes[i] = partes[i].trim(); // <--- ISTO ELIMINA O ESPAÇO EXTRA
+    }
+    
+    return partes;
+}
+>>>>>>> 6b75078089f7c94d1323c2ba01c146539f1b13c9
 
 public static String[] separarListaDeStringsLinguagens(String campo) {
     if (campo == null || campo.equals(""))
@@ -485,7 +512,10 @@ public static String[] separarListaDeStringsLinguagens(String campo) {
     }
     // Main {
     public static void main(String[] args) {
+<<<<<<< HEAD
         Locale.setDefault(Locale.US);
+=======
+>>>>>>> 6b75078089f7c94d1323c2ba01c146539f1b13c9
 
         try {
     // Tenta configurar a saída padrão para usar o encoding UTF-8
@@ -551,7 +581,11 @@ public static String[] separarListaDeStringsLinguagens(String campo) {
         
 // --- IMPRESSÃO DOS 5 PREÇOS MAIS CAROS E 5 MAIS BARATOS ---
 
+<<<<<<< HEAD
         System.out.println("| 5 pre\u00E7os mais caros |");   // sem \n
+=======
+        System.out.println("| 5 preços mais caros |\n");
+>>>>>>> 6b75078089f7c94d1323c2ba01c146539f1b13c9
         // O array está ordenado de forma ASCENDENTE (do menor Price para o maior)
         // Lemos do final para o início.
         int numCaros = Math.min(5, qtdIds);
@@ -559,9 +593,13 @@ public static String[] separarListaDeStringsLinguagens(String campo) {
             System.out.println(jogosParaOrdenar[qtdIds - 1 - i].toString()); 
         }
 
+<<<<<<< HEAD
         System.out.println("");
 
         System.out.println("| 5 pre\u00E7os mais baratos |"); // sem \n
+=======
+        System.out.println("| 5 preços mais baratos |\n");
+>>>>>>> 6b75078089f7c94d1323c2ba01c146539f1b13c9
         // Lemos do início para o fim.
         int numBaratos = Math.min(5, qtdIds);
         for (int i = 0; i < numBaratos; i++) {
