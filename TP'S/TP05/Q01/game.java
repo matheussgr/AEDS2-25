@@ -356,6 +356,7 @@ public class game {
     }
 
 // Ordenação usando o Algoritmo de Seleção
+
 // Selection Sort por Nome para ordenar o array de jogos
     public static void selectionSortNome(game[] array, int n){
         for(int i = 0; i < (n - 1); i++){
@@ -376,8 +377,7 @@ public class game {
         for(int i = 0; i < (n - 1); i++){
             int menor = i;
             for(int j = i + 1; j < n; j++){
-                // Compara IDs (int)
-                if(array[j] < array[menor]){ 
+                if(array[j] < array[menor]){  // Compara IDs 
                     menor = j;
                 }
             }
@@ -401,7 +401,7 @@ public class game {
             comparacoes[0]++; // Incrementa o contador de comparações, usei um array para simular passagem por referência
 
             if (comparacao == 0) {
-                return meio; // Nome encontrado na lista de jogos
+                return meio; // Nome encontrado na lista de jogos, retorna seu índice no array de jogos
             } else if (comparacao < 0) {
                 dir = meio - 1; 
             } else {
@@ -434,7 +434,7 @@ public class game {
 
     // Main 
     public static void main(String[] args) {
-        String arquivo = "/tmp/games.csv"; // Nome do arquivo CSV
+        String arquivo = "/tmp/games.csv"; 
         game[] jogos = new game[5000]; // Array para armazenar os jogos
         int qtdJogos = 0; 
 
@@ -453,7 +453,7 @@ public class game {
                 jogos[qtdJogos++] = game.lerCSV(linha); // Chama o método lerCSV para criar um objeto da classe game e armazena no array "jogos"
             }
 
-            br.close(); // Fecha o BufferedReader
+            br.close(); 
         } catch (IOException e) { 
             System.out.println("Erro ao abrir arquivo!");
         }
@@ -470,7 +470,7 @@ public class game {
             if (entrada.equals("FIM")) break;
             
             try {
-                idsLidos[qtdIdsLidos] = Integer.parseInt(entrada);
+                idsLidos[qtdIdsLidos] = Integer.parseInt(entrada); // Converte a entrada para inteiro e armazena no array
                 qtdIdsLidos++;
             } catch (NumberFormatException e) {}
         }
@@ -499,14 +499,14 @@ public class game {
             String nomeBusca = nomesBuscados[i];
             boolean resultadoFinal = false;
             
-            // Busca por Nome no arra de jogos
+            // Busca por Nome no array de jogos e retorna o índice do jogo encontrado
             int indiceJogo = game.pesquisaBinariaNome(jogos, qtdJogos, nomeBusca, contadorComparacao);
 
             if (indiceJogo != -1) {
                 // Jogo encontrado no CSV, agora pega o ID do jogo
                 int idDoJogo = jogos[indiceJogo].getID();
                 
-                // Busca por ID no array de IDs lidos
+                // Busca esse ID no array de IDs lidos
                 resultadoFinal = game.pesquisaBinariaID(idsLidos, qtdIdsLidos, idDoJogo, contadorComparacao);
             }
             

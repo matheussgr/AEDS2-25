@@ -31,8 +31,8 @@ typedef struct {
 
 // Métodos auxiliares
 
-// Cria uma cópia exata de uma string em nova área de memória
-static char* dupString(const char* s) {
+ 
+char* dupString(const char* s) { 
     if (!s) return NULL; // Verifica se o ponteiro passado é nulo, se 's' for NULL, não há string para copiar, então retorno NULL
     size_t n = strlen(s) + 1; //Calcula o tamanho da string original 
     char* nova = (char*)malloc(n); // Aloca memória suficiente para a nova string
@@ -41,18 +41,18 @@ static char* dupString(const char* s) {
 }
 
 // Objetivo: remover todos os espaços em branco do final de uma string
-static void trimDireita(char* s) {
+void trimDireita(char* s) {
     int i = (int)strlen(s) - 1; // Calcula o tamanho da string, subtraímos 1 para pegar o último caractere válido
     while (i >= 0 && isspace((unsigned char)s[i])) s[i--] = '\0'; // Enquanto houver caracteres e o caractere atual for espaço em branco, substituímos por '\0' e decrementamos o índice
 }                                                                 // O unsigned char é usado para garantir que a função isspace funcione corretamente com todos os valores de caractere
 
 // Objetivo: avançar o ponteiro até o primeiro caractere que NÃO seja espaço em branco (removendo espaços do início)
-static void pularEspacosEsquerda(char** s) { // O parâmetro é 'char** s' — ou seja, um ponteiro para um ponteiro de char, ou seja, ele pode modificar o ponteiro original passado, fazendo ele "andar" dentro da string
+void pularEspacosEsquerda(char** s) { // O parâmetro é 'char** s' — ou seja, um ponteiro para um ponteiro de char, ou seja, ele pode modificar o ponteiro original passado, fazendo ele "andar" dentro da string
     while (**s && isspace((unsigned char)**s)) (*s)++; // Enquanto o caractere atual não for o '\0' e for um espaço em branco a função incrementa o ponteiro (*s) para pular esse caractere.  
 } 
 
 // Objetivo: comparar duas strings sem considerar diferença entre letras maiúsculas e minúsculas .
-static int equalsIgnoreCase(const char* a, const char* b) {
+int equalsIgnoreCase(const char* a, const char* b) {
     if (!a || !b) return 0; // Verifica se algum dos ponteiros é NULL
     while (*a && *b) { // Enquanto as duas strings ainda não chegaram ao final
         if (tolower((unsigned char)*a) != tolower((unsigned char)*b)) return 0; // Compara os caracteres em minúsculo, se forem diferentes retorna 0 (falso)
@@ -62,7 +62,7 @@ static int equalsIgnoreCase(const char* a, const char* b) {
 }
 
 // Objetivo: verificar se uma string "padrao" aparece dentro de outra string "texto"
-static int containsIgnoreCase(const char *texto, const char *padrao) {
+int containsIgnoreCase(const char *texto, const char *padrao) {
     if (!texto || !padrao) return 0; 
     size_t n = strlen(texto);
     size_t m = strlen(padrao);
@@ -77,7 +77,7 @@ static int containsIgnoreCase(const char *texto, const char *padrao) {
 
 
 // Objetivo: "higienizar" uma string que representa lista textual, remove colchetes e aspas: [ ], " e ' ,também garante vírgula seguida de espaço: ["PT","EN-US"]  ->  PT, EN-US
-static void normalizarListaTexto(char* s) {
+void normalizarListaTexto(char* s) {
     
     char* w = s; // 'w' (write) é o ponteiro de escrita, começa no início de 's'
     for (char* r = s; *r; r++) {   // 'r' (read) percorre a string original
@@ -105,7 +105,7 @@ static void normalizarListaTexto(char* s) {
 }
 
 // Objetivo: dividir uma string em várias partes (tokens) de acordo com um delimitador (ex: vírgula), limpando os espaços em volta de cada parte, ex: Entrada: "PT , EN-US , FR" -> Saída: lista = ["PT", "EN-US", "FR"], qtd = 3
-static char** splitLista(const char* texto, const char* delim, int* qtd) {
+char** splitLista(const char* texto, const char* delim, int* qtd) {
     *qtd = 0;
     if (!texto || !*texto) return NULL;
 
@@ -129,7 +129,7 @@ static char** splitLista(const char* texto, const char* delim, int* qtd) {
 }
 
 // Imprime uma lista de strings no formato [A, B, C]
-static void imprimirLista(char** lista, int qtd) {
+void imprimirLista(char** lista, int qtd) {
     printf("[");
     for (int i = 0; i < qtd; i++) {
         printf("%s%s", lista[i], (i == qtd - 1) ? "" : ", "); // Se for o último elemento não imprime a vírgula
@@ -138,7 +138,7 @@ static void imprimirLista(char** lista, int qtd) {
 }
 
 // Libera uma lista alocada
-static void liberarLista(char*** lista, int* qtd) {
+void liberarLista(char*** lista, int* qtd) {
     if (*lista) {
         for (int i = 0; i < *qtd; i++) free((*lista)[i]); // Libera cada string individualmente
         free(*lista); // Libera o array de ponteiros
@@ -149,7 +149,7 @@ static void liberarLista(char*** lista, int* qtd) {
 
 
 // Converte datas para DD/MM/YYYY
-static char* padronizarData(const char* dataCsv) {
+char* padronizarData(const char* dataCsv) {
     
     if (!dataCsv || !*dataCsv) return dupString("01/01/1900");
 
@@ -222,11 +222,8 @@ static char* padronizarData(const char* dataCsv) {
 }
 
 
-
-// Converte uma linha CSV em um struct Game preenchendo cada atributo 
-
 // Extrai o primeiro número inteiro encontrado no campo "owners", ignorando separadores de milhar e parando em hífen ou espaço
-static int parseOwnersPrimeiroNumero(const char *campo) {
+int parseOwnersPrimeiroNumero(const char *campo) {
     char dig[TAM_MAX_CAMPO]; 
     int j = 0;
 
@@ -245,7 +242,7 @@ static int parseOwnersPrimeiroNumero(const char *campo) {
 }
 
 // Converte uma linha CSV em um struct Game preenchendo cada atributo 
-static void parseLinhaParaGame(Game* g, const char* linha) {
+void parseLinhaParaGame(Game* g, const char* linha) {
     
     char campo[TAM_MAX_CAMPO]; // Campo é a cada parte da linha sendo lida atualmente
     int pos = 0, coluna = 0; // 'coluna' indica qual atributo está sendo preenchido e  'pos' indica a posição atual dentro do campo sendo lido
@@ -328,7 +325,7 @@ static void parseLinhaParaGame(Game* g, const char* linha) {
 
 
 // Impressão
-static void imprimirGame(const Game* g) {
+void imprimirGame(const Game* g) {
     printf("=> %d ## %s ## %s ## %d ## %.2f ## ", g->id, g->name, g->data, g->owners, g->price);
     imprimirLista(g->languages, g->languagesCount);
     printf(" ## %d ## %.1f ## %d ## ", g->mScore, g->uScore, g->conq);
@@ -345,7 +342,7 @@ static void imprimirGame(const Game* g) {
 }
 
 // Liberação de memória
-static void liberarGame(Game* g) {
+void liberarGame(Game* g) {
     free(g->name);
     free(g->data);
     liberarLista(&g->languages,  &g->languagesCount);
@@ -356,8 +353,8 @@ static void liberarGame(Game* g) {
     liberarLista(&g->tags,       &g->tagsCount);
 }
 
-// Ordenação por seleção (Selection Sort) baseado no campo 'name'
-static void selectionSort(Game** array, int n, long long* comparacoes, long long* movimentacoes) {
+// Selection Sort baseado no campo 'name'
+void selectionSort(Game** array, int n, long long* comparacoes, long long* movimentacoes) {
     for (int i = 0; i < (n - 1); i++) {
         int menor = i;
         for (int j = (i + 1); j < n; j++) {
@@ -382,6 +379,7 @@ int main(void) {
     const char* caminhoCSV = "/tmp/games.csv";  
 
     // Conta linhas (exceto cabeçalho) para alocar vetor
+   
     FILE* f = fopen(caminhoCSV, "r");
     if (!f) { perror("Erro ao abrir /tmp/games.csv"); return 1; }
 
@@ -402,7 +400,7 @@ int main(void) {
 
     fgets(linha, sizeof(linha), f); // Pula cabeçalho
     while (fgets(linha, sizeof(linha), f)) { // Lê cada linha
-        linha[strcspn(linha, "\r\n")] = 0; // Remove \r e \n do final da linha
+        linha[strcspn(linha, "\r\n")] = 0; // "strcspn" procura o primeiro \r ou \n na string "entrada", depois ele substitui esse caractere por '\0', cortando a string nesse ponto, eliminando a parte que vem depois 
         if (usados < total) { 
             parseLinhaParaGame(&jogos[usados], linha); // Converte linha e armazena no vetor jogos
             usados++; // Incrementa contador de jogos carregados
@@ -411,14 +409,11 @@ int main(void) {
     fclose(f);
 
 
-
-
     // Cria um array de ponteiros de ponteiros para Games para armazenar os jogos a serem ordenados
     
-    Game** jogosParaOrdenar = (Game**)malloc(sizeof(Game*) * 10);
+    Game** jogosParaOrdenar = (Game**)malloc(sizeof(Game*) * 100);
     
     int countParaOrdenar = 0; // Contador de jogos a serem ordenados
-    int capacidade = 10; 
     char entrada[TAM_MAX_CAMPO]; // Array para ler entradas 
     
     // Leitura dos IDs até "FIM"
@@ -432,20 +427,6 @@ int main(void) {
         // Busca o Game correspondente no array principal
         for (int i = 0; i < usados; i++) {
             if (jogos[i].id == idBuscado) { // Encontrou o jogo com o ID correspondente
-                // Realoca o array de ponteiros se a capacidade for excedida
-                if (countParaOrdenar == capacidade) { 
-                    capacidade *= 2;
-                    Game** novoArray = (Game**)realloc(jogosParaOrdenar, sizeof(Game*) * capacidade); 
-                    if (!novoArray) {
-                        perror("Erro ao realocar array de ponteiros.");
-                        free(jogosParaOrdenar);
-                        for (int k = 0; k < usados; k++) liberarGame(&jogos[k]);
-                        free(jogos);
-                        return 1; 
-                    }
-                    jogosParaOrdenar = novoArray;
-                }
-                
                 jogosParaOrdenar[countParaOrdenar++] = &jogos[i]; // Adiciona o ponteiro do jogo ao array de ordenação, formando um array de ponteiros correspondentes aos jogos inseridos, e incrementa o contador
                 break;
             }

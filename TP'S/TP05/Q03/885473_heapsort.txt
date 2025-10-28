@@ -1,1 +1,1 @@
-885473	2360	1755	0,237
+Matrícula: 885473	Comparações: 1994	Movimentações: 1755	Tempo de Execução:0,196

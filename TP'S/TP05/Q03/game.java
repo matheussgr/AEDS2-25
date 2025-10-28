@@ -416,13 +416,8 @@ public class game {
 
     // Método construir
     public static void construir(game[] array, int tamHeap){
-        for(int i = tamHeap; i > 1; i /= 2){
-            comparacoes++; // Compara array[i] > array[i/2]
-            if (isMaior(array[i], array[i/2])) {
+         for(int i = tamHeap; i > 1 && isMaior(array[i], array[i/2]); i /= 2){
                 swap(array, i, i/2);
-            } else {
-                break; 
-            }
         }
     }
     
@@ -431,13 +426,12 @@ public class game {
         int i = 1;
         while(i <= (tamHeap/2)){
             int filho = getMaiorFilho(array, i, tamHeap);
-            
             comparacoes++; // Compara array[i] < array[filho]
             if(isMaior(array[filho], array[i])){ 
                 swap(array, i, filho);
                 i = filho;
             }else{
-                break;
+                i = tamHeap;
             }
         }
     }
@@ -446,15 +440,11 @@ public class game {
     public static int getMaiorFilho(game[] array, int i, int tamHeap){
         int filho;
         
-        if (2*i == tamHeap) {
+        if (2*i == tamHeap || isMaior(array[2*i], array[2*i+1])) {
+            comparacoes++; // Compara array[2*i] > array[2*i+1]
             filho = 2*i;
         } else {
-            comparacoes++; // Compara array[2*i] > array[2*i+1]
-            if (isMaior(array[2*i], array[2*i+1])) {
-                filho = 2*i;
-            } else {
-                filho = 2*i + 1;
-            }
+            filho = 2*i + 1;
         }
         return filho;
     }
@@ -463,11 +453,10 @@ public class game {
         String nomeArquivo = MATRICULA + "_heapsort.txt";
         DecimalFormat df = new DecimalFormat("0.000");
         
-        // Formato: Matricula \t Comparações \t Movimentações \t Tempo (ms)
-        String logData = MATRICULA + "\t" + 
-                         comparacoes + "\t" + 
-                         movimentacoes + "\t" + 
-                         df.format((double)tempoExecucao / 1000000.0);
+        String logData = "Matrícula: " + MATRICULA + "\t" + 
+                         "Comparações: " + comparacoes + "\t" + 
+                         "Movimentações: " + movimentacoes + "\t" + 
+                         "Tempo de Execução:" + df.format((double)tempoExecucao / 1000000.0);
 
         try (FileWriter fw = new FileWriter(nomeArquivo)) {
             fw.write(logData);
@@ -514,6 +503,7 @@ public class game {
         }
         sc.close();
 
+        // Cria um array com os jogos (de acordo com os IDs fornecidos) que serão ordenados
         game[] jogosParaOrdenar = new game[qtdIds];
         for (int i = 0; i < qtdIds; i++) {
             int idBuscado = idsBuscados[i];
@@ -524,15 +514,12 @@ public class game {
                 }
             }
         }
-
-        // --- ORDENAÇÃO HEAPSORT E MEDIÇÃO DE TEMPO ---
         
         long inicio = System.nanoTime();
         heapsort(jogosParaOrdenar, qtdIds);
         long fim = System.nanoTime();
         tempoExecucao = fim - inicio;
         
-        // --- SAÍDA E GERAÇÃO DO LOG ---
 
         // Imprime os registros ordenados
         for (int i = 0; i < qtdIds; i++) {

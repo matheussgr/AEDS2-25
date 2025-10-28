@@ -1,4 +1,4 @@
-// Matheus Gouvêa Ramalho - TP05 - Q02 - Selection Sort
+// Matheus Gouvêa Ramalho - TP05 - Q04 - Selection Sort
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,9 +11,9 @@
 #define TAM_MAX_LINHA 4096 // Tamanho máximo de uma linha do CSV
 #define TAM_MAX_CAMPO 1024 // Tamanho máximo de um campo do CSV
 
-static long long comparacoes = 0;
-static long long movimentacoes = 0;
-static const char* MATRICULA = "885473"; 
+long long comparacoes = 0;
+long long movimentacoes = 0;
+const char* MATRICULA = "885473"; 
 
 // Estrutura para armazenar os dados de um jogo
 typedef struct {
@@ -36,7 +36,7 @@ typedef struct {
 // Métodos auxiliares
 
 // Cria uma cópia exata de uma string em nova área de memória
-static char* dupString(const char* s) {
+char* dupString(const char* s) {
     if (!s) return NULL; // Verifica se o ponteiro passado é nulo, se 's' for NULL, não há string para copiar, então retorno NULL
     size_t n = strlen(s) + 1; //Calcula o tamanho da string original 
     char* nova = (char*)malloc(n); // Aloca memória suficiente para a nova string
@@ -45,18 +45,18 @@ static char* dupString(const char* s) {
 }
 
 // Objetivo: remover todos os espaços em branco do final de uma string
-static void trimDireita(char* s) {
+void trimDireita(char* s) {
     int i = (int)strlen(s) - 1; // Calcula o tamanho da string, subtraímos 1 para pegar o último caractere válido
     while (i >= 0 && isspace((unsigned char)s[i])) s[i--] = '\0'; // Enquanto houver caracteres e o caractere atual for espaço em branco, substituímos por '\0' e decrementamos o índice
 }                                                                 // O unsigned char é usado para garantir que a função isspace funcione corretamente com todos os valores de caractere
 
 // Objetivo: avançar o ponteiro até o primeiro caractere que NÃO seja espaço em branco (removendo espaços do início)
-static void pularEspacosEsquerda(char** s) { // O parâmetro é 'char** s' — ou seja, um ponteiro para um ponteiro de char, ou seja, ele pode modificar o ponteiro original passado, fazendo ele "andar" dentro da string
+void pularEspacosEsquerda(char** s) { // O parâmetro é 'char** s' — ou seja, um ponteiro para um ponteiro de char, ou seja, ele pode modificar o ponteiro original passado, fazendo ele "andar" dentro da string
     while (**s && isspace((unsigned char)**s)) (*s)++; // Enquanto o caractere atual não for o '\0' e for um espaço em branco a função incrementa o ponteiro (*s) para pular esse caractere.  
 } 
 
 // Objetivo: comparar duas strings sem considerar diferença entre letras maiúsculas e minúsculas .
-static int equalsIgnoreCase(const char* a, const char* b) {
+int equalsIgnoreCase(const char* a, const char* b) {
     if (!a || !b) return 0; // Verifica se algum dos ponteiros é NULL
     while (*a && *b) { // Enquanto as duas strings ainda não chegaram ao final
         if (tolower((unsigned char)*a) != tolower((unsigned char)*b)) return 0; // Compara os caracteres em minúsculo, se forem diferentes retorna 0 (falso)
@@ -66,7 +66,7 @@ static int equalsIgnoreCase(const char* a, const char* b) {
 }
 
 // Objetivo: verificar se uma string "padrao" aparece dentro de outra string "texto"
-static int containsIgnoreCase(const char *texto, const char *padrao) {
+int containsIgnoreCase(const char *texto, const char *padrao) {
     if (!texto || !padrao) return 0; 
     size_t n = strlen(texto);
     size_t m = strlen(padrao);
@@ -81,7 +81,7 @@ static int containsIgnoreCase(const char *texto, const char *padrao) {
 
 
 // Objetivo: "higienizar" uma string que representa lista textual, remove colchetes e aspas: [ ], " e ' ,também garante vírgula seguida de espaço: ["PT","EN-US"]  ->  PT, EN-US
-static void normalizarListaTexto(char* s) {
+void normalizarListaTexto(char* s) {
     
     char* w = s; // 'w' (write) é o ponteiro de escrita, começa no início de 's'
     for (char* r = s; *r; r++) {   // 'r' (read) percorre a string original
@@ -109,7 +109,7 @@ static void normalizarListaTexto(char* s) {
 }
 
 // Objetivo: dividir uma string em várias partes (tokens) de acordo com um delimitador (ex: vírgula), limpando os espaços em volta de cada parte, ex: Entrada: "PT , EN-US , FR" -> Saída: lista = ["PT", "EN-US", "FR"], qtd = 3
-static char** splitLista(const char* texto, const char* delim, int* qtd) {
+char** splitLista(const char* texto, const char* delim, int* qtd) {
     *qtd = 0;
     if (!texto || !*texto) return NULL;
 
@@ -133,7 +133,7 @@ static char** splitLista(const char* texto, const char* delim, int* qtd) {
 }
 
 // Imprime uma lista de strings no formato [A, B, C]
-static void imprimirLista(char** lista, int qtd) {
+void imprimirLista(char** lista, int qtd) {
     printf("[");
     for (int i = 0; i < qtd; i++) {
         printf("%s%s", lista[i], (i == qtd - 1) ? "" : ", "); // Se for o último elemento não imprime a vírgula
@@ -142,7 +142,7 @@ static void imprimirLista(char** lista, int qtd) {
 }
 
 // Libera uma lista alocada
-static void liberarLista(char*** lista, int* qtd) {
+void liberarLista(char*** lista, int* qtd) {
     if (*lista) {
         for (int i = 0; i < *qtd; i++) free((*lista)[i]); // Libera cada string individualmente
         free(*lista); // Libera o array de ponteiros
@@ -153,7 +153,7 @@ static void liberarLista(char*** lista, int* qtd) {
 
 
 // Converte datas para DD/MM/YYYY
-static char* padronizarData(const char* dataCsv) {
+char* padronizarData(const char* dataCsv) {
     
     if (!dataCsv || !*dataCsv) return dupString("01/01/1900");
 
@@ -230,7 +230,7 @@ static char* padronizarData(const char* dataCsv) {
 // Converte uma linha CSV em um struct Game preenchendo cada atributo 
 
 // Extrai o primeiro número inteiro encontrado no campo "owners", ignorando separadores de milhar e parando em hífen ou espaço
-static int parseOwnersPrimeiroNumero(const char *campo) {
+int parseOwnersPrimeiroNumero(const char *campo) {
     char dig[TAM_MAX_CAMPO]; 
     int j = 0;
 
@@ -249,7 +249,7 @@ static int parseOwnersPrimeiroNumero(const char *campo) {
 }
 
 // Converte uma linha CSV em um struct Game preenchendo cada atributo 
-static void parseLinhaParaGame(Game* g, const char* linha) {
+void parseLinhaParaGame(Game* g, const char* linha) {
     
     char campo[TAM_MAX_CAMPO]; // Campo é a cada parte da linha sendo lida atualmente
     int pos = 0, coluna = 0; // 'coluna' indica qual atributo está sendo preenchido e  'pos' indica a posição atual dentro do campo sendo lido
@@ -332,7 +332,7 @@ static void parseLinhaParaGame(Game* g, const char* linha) {
 
 
 // Impressão
-static void imprimirGame(const Game* g) {
+void imprimirGame(const Game* g) {
     printf("=> %d ## %s ## %s ## %d ## %.2f ## ", g->id, g->name, g->data, g->owners, g->price);
     imprimirLista(g->languages, g->languagesCount);
     printf(" ## %d ## %.1f ## %d ## ", g->mScore, g->uScore, g->conq);
@@ -349,7 +349,7 @@ static void imprimirGame(const Game* g) {
 }
 
 // Liberação de memória
-static void liberarGame(Game* g) {
+void liberarGame(Game* g) {
     free(g->name);
     free(g->data);
     liberarLista(&g->languages,  &g->languagesCount);
@@ -361,27 +361,26 @@ static void liberarGame(Game* g) {
 }
 
 
-static int isMenor(const Game* a, const Game* b) {
-    // 1. Comparação de Data (Formato DD/MM/YYYY)
-    // Comparação é feita de trás para frente (YYYY/MM/DD) para garantir a ordem cronológica
-    
-    // YYYY (Índices 6, 7, 8, 9)
-    int cmp_ano = strncmp(&a->data[6], &b->data[6], 4);
-    comparacoes++;
-    if (cmp_ano != 0) return cmp_ano; // Retorna < 0 se a < b, > 0 se a > b
+int isMenor(const Game* a, const Game* b) {
+    // Comparação de Data 
 
-    // MM (Índices 3, 4)
+    // Primeiro compara o ano
+    int cmp_ano = strncmp(&a->data[6], &b->data[6], 4); // Compara os indices 6 à 9
+    comparacoes++;
+    if (cmp_ano != 0) return cmp_ano; // Retorna < 0 se a < b ou > 0 se a > b
+
+    // Depois o mês
     int cmp_mes = strncmp(&a->data[3], &b->data[3], 2);
     comparacoes++;
     if (cmp_mes != 0) return cmp_mes;
 
-    // DD (Índices 0, 1)
+    // E por fim o dia
     int cmp_dia = strncmp(&a->data[0], &b->data[0], 2);
     comparacoes++;
     if (cmp_dia != 0) return cmp_dia;
 
-    // 2. Desempate por AppID (Crescente)
-    comparacoes++; // Comparação do ID
+    // Desempate por AppID 
+    comparacoes++; 
     if (a->id < b->id) return -1;
     if (a->id > b->id) return 1;
 
@@ -389,40 +388,41 @@ static int isMenor(const Game* a, const Game* b) {
     return 0;
 }
 
-// Troca de ponteiros
-static void swap(Game** array, int i, int j) {
+
+void swap(Game** array, int i, int j) {
     Game* temp = array[i];
     array[i] = array[j];
     array[j] = temp;
-    movimentacoes += 3; // 3 movimentações de ponteiro
+    movimentacoes += 3; 
 }
 
+// Ordenação Quick Sort
 static void quicksortRec(Game** array, int esq, int dir) {
     int i = esq, j = dir;
-    // O pivô agora é um ponteiro para Game*
+    
     Game* pivo = array[(dir+esq)/2]; 
  
-    // Laço principal de partição
- while (i <= j) {
-        // Encontra o primeiro elemento à esquerda que é maior ou igual ao pivô
-while (isMenor(array[i], pivo) < 0) i++;
-        // Encontra o primeiro elemento à direita que é menor ou igual ao pivô
-while (isMenor(array[j], pivo) > 0) j--;
+    
+    while (i <= j) {
+       
+    while (isMenor(array[i], pivo) < 0) i++;
         
-        // Se os ponteiros não se cruzaram, troca
-if (i <= j) {
-swap(array, i, j);
-i++;
-j--;
+    while (isMenor(array[j], pivo) > 0) j--;
+        
+   
+    if (i <= j) {
+    swap(array, i, j);
+    i++;
+    j--;
  }
 }
     
-    // Chamadas recursivas
+    
 if (esq < j) quicksortRec(array, esq, j);
 if (i < dir) quicksortRec(array, i, dir);
 }
 
-// Quicksort Wrapper (Modelo do Professor)
+
 static void quicksort(Game** array, int n) {
 quicksortRec(array, 0, n-1);
 }
@@ -435,6 +435,7 @@ int main(void) {
     const char* caminhoCSV = "/tmp/games.csv";  
 
     // Conta linhas (exceto cabeçalho) para alocar vetor
+
     FILE* f = fopen(caminhoCSV, "r");
     if (!f) { perror("Erro ao abrir /tmp/games.csv"); return 1; }
 
@@ -462,9 +463,6 @@ int main(void) {
         }
     }
     fclose(f);
-
-
-
 
     // Cria um array de ponteiros de ponteiros para Games para armazenar os jogos a serem ordenados
     
@@ -511,7 +509,7 @@ int main(void) {
     clock_t inicio, fim;
     double tempoExecucao = 0.0;
 
-    // Ordenação dos jogos fornecidos na pub.in usando Selection Sort
+    // Ordenação dos jogos fornecidos na pub.in usando QuickSort
     if (countParaOrdenar > 0) {
         inicio = clock();
         quicksort(jogosParaOrdenar, countParaOrdenar);
@@ -527,7 +525,7 @@ int main(void) {
     // Criação do Arquivo de Log 
     const char* matricula = "885473"; 
     char nomeLog[64];
-    sprintf(nomeLog, "%s_selecao.txt", matricula);
+    sprintf(nomeLog, "%s_quicksort.txt", matricula);
 
      FILE* logFile = fopen(nomeLog, "w");
      if (logFile) { 

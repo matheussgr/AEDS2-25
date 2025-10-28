@@ -1,11 +1,8 @@
-// Matheus Gouvêa Ramalho - TP05 - Q03 - Heapsort
+// Matheus Gouvêa Ramalho - TP05 - Q05 - Mergesort
 
 import java.io.*;
 import java.text.DecimalFormat;
-<<<<<<< HEAD
 import java.util.Locale;
-=======
->>>>>>> 6b75078089f7c94d1323c2ba01c146539f1b13c9
 import java.util.Scanner;
 
 public class game {
@@ -343,84 +340,52 @@ public class game {
         } else {
             return Float.parseFloat(preco);
         }
-<<<<<<< HEAD
+
     }
+
 
     // Separa uma lista de strings que estão no formato ["str1", "str2", "str3"] em um array de strings
     public static String[] separarListaDeStrings(String campo) {
         if (campo == null || campo.equals(""))
-            return new String[0];
-            
-        // 1. Limpa colchetes e aspas
+        return new String[0];
+        
         campo = campo.replace("[", "").replace("]", "").replace("\"", "").trim();
-        
-        // 2. CORREÇÃO DE ESPAÇOS: Substitui sequências de vírgula + múltiplos espaços por vírgula + um espaço
-        campo = campo.replaceAll(",\\s+", ", "); 
-        
+    
         if (campo.equals(""))
             return new String[0];
-            
+    
         String[] partes = campo.split(",");
-        
-        // 3. Trim em cada elemento (necessário para o primeiro elemento e para dados sem espaço após a vírgula)
+    
+    
         for (int i = 0; i < partes.length; i++) {
-            partes[i] = partes[i].trim();
+            partes[i] = partes[i].trim(); 
         }
+    
+    return partes;
+}
+
+
+    public static String[] separarListaDeStringsLinguagens(String campo) {
+        if (campo == null || campo.equals(""))
+            return new String[0];
+    
+        campo = campo.replace("[", "").replace("]", "").replace("\"", "").replace("'", "").trim();
+
+        if (campo.equals(""))
+            return new String[0];
+        
+        String[] partes = campo.split(",");
+    
+        for (int i = 0; i < partes.length; i++) {
+        partes[i] = partes[i].trim(); 
+        }
+    
         return partes;
     }
 
-=======
-    }
-
-    // Separa uma lista de strings que estão no formato ["str1", "str2", "str3"] em um array de strings
-public static String[] separarListaDeStrings(String campo) {
-    if (campo == null || campo.equals(""))
-        return new String[0];
-        
-    campo = campo.replace("[", "").replace("]", "").replace("\"", "").trim();
-    
-    if (campo.equals(""))
-        return new String[0];
-    
-    String[] partes = campo.split(",");
-    
-    // CORREÇÃO: Aplicar trim() a cada parte
-    for (int i = 0; i < partes.length; i++) {
-        partes[i] = partes[i].trim(); // <--- ISTO ELIMINA O ESPAÇO EXTRA
-    }
-    
-    return partes;
-}
->>>>>>> 6b75078089f7c94d1323c2ba01c146539f1b13c9
-
-public static String[] separarListaDeStringsLinguagens(String campo) {
-    if (campo == null || campo.equals(""))
-        return new String[0];
-        
-    // 1. Limpa os caracteres delimitadores e remove espaços externos da string completa
-    campo = campo.replace("[", "").replace("]", "").replace("\"", "").replace("'", "").trim();
-    
-    if (campo.equals(""))
-        return new String[0];
-        
-    // 2. Divide a string
-    String[] partes = campo.split(",");
-    
-    // 3. CORREÇÃO: Remove espaços em branco (trim) de CADA elemento
-    for (int i = 0; i < partes.length; i++) {
-        partes[i] = partes[i].trim(); 
-    }
-    
-    return partes;
-}
-
-// --- LÓGICA DE COMPARAÇÃO (ISMENOR) ---
-    // Retorna true se gameA for "menor" que gameB (deve vir antes, Price crescente, ID crescente)
+    // Comparação entre dois jogos, retorna true se gameA for menor que gameB de acordo com o preço
     public static boolean isMenor(game gameA, game gameB) {
-        // Incrementa o contador de comparações. Uma comparação no total.
-        // O desempate ocorre dentro da mesma 'comparação lógica'.
         comparacoes++; 
-        
         if (gameA.getPrice() != gameB.getPrice()) {
             return gameA.getPrice() < gameB.getPrice();
         }
@@ -429,14 +394,10 @@ public static String[] separarListaDeStringsLinguagens(String campo) {
         return gameA.getID() < gameB.getID(); 
     }
 
-    // --- MÉTODOS DE ORDENAÇÃO MERGESORT (Baseado no modelo do professor) ---
-
-    // Método de interface para o sort, como o do professor
     public static void mergesort(game[] array, int n) {
         mergesort(array, 0, n - 1);
     }
 
-    // Método recursivo, como o do professor
     private static void mergesort(game[] array, int esq, int dir) {
         if (esq < dir){
            int meio = (esq + dir) / 2;
@@ -446,18 +407,16 @@ public static String[] separarListaDeStringsLinguagens(String campo) {
         }
     }
 
-    // Método intercalar (intercalar/merge) - ADAPTADO para game[] e contagem
     public static void intercalar(game[] array, int esq, int meio, int dir){
         int n1, n2, i, j, k;
 
-        //Definir tamanho dos dois subarrays
         n1 = meio-esq+1;
         n2 = dir - meio;
 
         game[] a1 = new game[n1+1];
         game[] a2 = new game[n2+1];
         
-        // Criando a Sentinela para o Mergesort (um objeto "infinito")
+        
         // Como Price e ID são a chave de ordenação, a sentinela deve ter o valor máximo
         game sentinela = new game();
         sentinela.setPrice(Float.MAX_VALUE);
@@ -466,43 +425,40 @@ public static String[] separarListaDeStringsLinguagens(String campo) {
         // Inicializar primeiro subarray
         for(i = 0; i < n1; i++){
            a1[i] = array[esq+i];
-           movimentacoes++; // Movimentação (cópia para a1)
+           movimentacoes++; 
         }
 
         // Inicializar segundo subarray
         for(j = 0; j < n2; j++){
            a2[j] = array[meio+j+1];
-           movimentacoes++; // Movimentação (cópia para a2)
+           movimentacoes++; 
         }
 
         // Sentinela no final dos dois arrays
-        a1[n1] = sentinela; // Usando i=n1, j=n2 após os loops
+        a1[n1] = sentinela; 
         a2[n2] = sentinela;
-        movimentacoes += 2; // Movimentação (atribuição das sentinelas)
+        movimentacoes += 2; 
 
         // Intercalacao propriamente dita
         for(i = j = 0, k = esq; k <= dir; k++){
-           // Usa a função de comparação isMenor para determinar qual elemento é menor
            if (isMenor(a1[i], a2[j])) {
                array[k] = a1[i++];
            } else {
                array[k] = a2[j++];
            }
-           movimentacoes++; // Movimentação (atribuição de volta para o array principal)
-           // NOTA: A contagem de comparações já é feita dentro de isMenor()
+           movimentacoes++; 
         }
     }
 
-    // --- GERAÇÃO DE LOG ---
-
+    // Método para criar o arquivo de log
     public static void criarLog() {
         String nomeArquivo = MATRICULA + "_mergesort.txt"; 
         DecimalFormat df = new DecimalFormat("0.000");
         
-        String logData = MATRICULA + "\t" + 
-                                comparacoes + "\t" + 
-                                movimentacoes + "\t" + 
-                                df.format((double)tempoExecucao / 1000000.0);
+        String logData = "Matrícula: " + MATRICULA + "\t" + 
+                         "Comparações: " + comparacoes + "\t" + 
+                         "Movimentações: " + movimentacoes + "\t" + 
+                         "Tempo de Execução: " + df.format((double)tempoExecucao / 1000000.0);
 
         try (FileWriter fw = new FileWriter(nomeArquivo)) {
             fw.write(logData);
@@ -512,18 +468,15 @@ public static String[] separarListaDeStringsLinguagens(String campo) {
     }
     // Main {
     public static void main(String[] args) {
-<<<<<<< HEAD
-        Locale.setDefault(Locale.US);
-=======
->>>>>>> 6b75078089f7c94d1323c2ba01c146539f1b13c9
 
-        try {
-    // Tenta configurar a saída padrão para usar o encoding UTF-8
-    System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out), true, "UTF-8"));
-} catch (UnsupportedEncodingException e) {
-    // Se UTF-8 não for suportado, o que é improvável, usa o padrão.
-    e.printStackTrace();
-}
+        Locale.setDefault(Locale.US); 
+
+        // Força o uso de UTF-8 na saída padrão
+        try { 
+            System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out), true, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         String arquivo = "/tmp/games.csv"; // Nome do arquivo CSV
         game[] jogos = new game[5000]; // Array para armazenar os jogos
@@ -572,42 +525,29 @@ public static String[] separarListaDeStringsLinguagens(String campo) {
             }
         }
 
-        // --- ORDENAÇÃO HEAPSORT E MEDIÇÃO DE TEMPO ---
-        
         long inicio = System.nanoTime();
         mergesort(jogosParaOrdenar, qtdIds);
         long fim = System.nanoTime();
         tempoExecucao = fim - inicio;
         
-// --- IMPRESSÃO DOS 5 PREÇOS MAIS CAROS E 5 MAIS BARATOS ---
+        // Impressão dos resultados
 
-<<<<<<< HEAD
-        System.out.println("| 5 pre\u00E7os mais caros |");   // sem \n
-=======
-        System.out.println("| 5 preços mais caros |\n");
->>>>>>> 6b75078089f7c94d1323c2ba01c146539f1b13c9
-        // O array está ordenado de forma ASCENDENTE (do menor Price para o maior)
-        // Lemos do final para o início.
-        int numCaros = Math.min(5, qtdIds);
-        for (int i = 0; i < numCaros; i++) {
+        System.out.println("| 5 pre\u00E7os mais caros |");   
+
+        // Leitura dos 5 últimos elementos do array ordenado ( 5 maiores preços )
+        for (int i = 0; i < 5; i++) {
             System.out.println(jogosParaOrdenar[qtdIds - 1 - i].toString()); 
         }
 
-<<<<<<< HEAD
-        System.out.println("");
+        System.out.println(""); 
 
-        System.out.println("| 5 pre\u00E7os mais baratos |"); // sem \n
-=======
-        System.out.println("| 5 preços mais baratos |\n");
->>>>>>> 6b75078089f7c94d1323c2ba01c146539f1b13c9
-        // Lemos do início para o fim.
-        int numBaratos = Math.min(5, qtdIds);
-        for (int i = 0; i < numBaratos; i++) {
+        System.out.println("| 5 pre\u00E7os mais baratos |"); 
+
+        // Leitura dos 5 primeiros elementos do array ordenado ( 5 menores preços )
+        for (int i = 0; i < 5; i++) {
             System.out.println(jogosParaOrdenar[i].toString());
         }
 
-
-        
         // Gera o arquivo de log
         criarLog();
     }
