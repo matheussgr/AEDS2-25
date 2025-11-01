@@ -28,11 +28,23 @@ public class Pilha {
     }
 
     public void Inserir(int x){
-
+        Celula tmp = new Celula(x);
+        tmp.prox = topo;
+        topo = tmp;
+        tmp = null;
     }
 
     public int Remover(){
-
+        if(topo == null){
+            System.out.println("Erro ao remover: Pilha vazia");
+            return -1;
+        }
+        int resp = topo.elemento;
+        Celula tmp = topo;
+        topo = topo.prox;
+        tmp.prox = null;
+        tmp = null;
+        return resp;
     }
 
     public void Mostrar(){

@@ -44,7 +44,7 @@ public class Lista {
         ultimo.prox = new Celula(x);
         ultimo = ultimo.prox;
     }
-    }
+    
     public void Inserir(int x, int pos){
         int tamanho = tamanho();
         if (pos < 0 || pos > tamanho){
@@ -63,6 +63,15 @@ public class Lista {
         }
     }
     public int RemoverInicio(){
+        if(primeiro == ultimo){
+            System.out.println("Erro!");
+        }
+        Celula tmp = primeiro;
+        primeiro = primeiro.prox;
+        int elemento = primeiro.elemento;
+        tmp.prox = null;
+        tmp = null;
+        return elemento;
     }
     public int RemoverFim(){
         if(primeiro == ultimo){
