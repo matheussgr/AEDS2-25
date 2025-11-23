@@ -398,7 +398,6 @@ void mostrarPilhaRecursiva(Celula* i, int indice_atual) {
     }
 }
 
-
 void mostrarPilha() {
     if (topo == NULL) return;
     mostrarPilhaRecursiva(topo, 0); 
