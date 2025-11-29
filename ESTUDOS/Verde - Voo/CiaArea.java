@@ -1,4 +1,4 @@
-public import java.util.*;
+import java.util.*;
 
 public class CiaArea {
 
@@ -123,13 +123,9 @@ public class CiaArea {
         }
 
         arvore.caminharPos();
-
+        sc.close();
     }
 
 }
 
 
-
- {
-    
-}
