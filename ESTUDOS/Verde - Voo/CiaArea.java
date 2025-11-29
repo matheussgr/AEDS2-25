@@ -1,5 +1,3 @@
-package ESTUDOS.Verde - Voo;
-
 public import java.util.*;
 
 public class CiaArea {
