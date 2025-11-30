@@ -35,9 +35,9 @@ public class Main {
                 for(int i = 0; i < qtd; i++){
                     if(pacote[i] < 10){
                         System.out.println("Package" + " " + "00" + pacote[i] + " ");
-                    }else if (pacote[i] < 100){
+                    } else if (pacote[i] < 100){
                         System.out.println("Package" + " " + "0" +pacote[i] + " ");
-                    }else{
+                    } else{
                         System.out.println("Package" + " " + pacote[i] + " ");
                     }
                 }
